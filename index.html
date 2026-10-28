@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Свадебное приглашение</title>
+    
+    <!-- Подключение шрифтов -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Great+Vibes&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #f4f4f4; 
+            color: #333;
+            line-height: 1.6;
+            display: flex;
+            justify-content: center;
+            overflow-x: hidden; 
+        }
+
+        .invitation-container {
+            max-width: 600px;
+            width: 100%;
+            background-color: #ffffff; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* --- АНИМАЦИЯ ЗАГОЛОВКОВ --- */
+        h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 26px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 25px; 
+            color: #111; 
+            text-align: center; 
+            width: 100%;
+            position: relative;
+            z-index: 2;
+            
+            opacity: 0;
+            transform: translateY(15px) scale(0.95);
+            filter: blur(5px);
+            transition: opacity 1s ease-out, transform 1s ease-out, filter 1s ease-out;
+        }
+
+        .reveal.active h2 {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            filter: blur(0);
+        }
+
+        p {
+            font-size: 14px;
+            font-weight: 300;
+            margin-bottom: 15px;
+            color: #555;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* --- СТИЛЬ ОСНОВНОГО ТЕКСТА (Light) --- */
+        .contrast-text {
+            font-size: 16px; 
+            font-weight: 300; 
+            color: #222; 
+            line-height: 1.7; 
+            max-width: 480px; 
+            margin: 0 auto 35px auto; 
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .heart-icon {
+            font-size: 22px; 
+            line-height: 1;
+            vertical-align: middle; 
+            margin-left: 2px;
+            color: #444;
+            display: inline-block;
+            animation: heartBeat 2s infinite ease-in-out;
+        }
+
+        /* --- АНИМАЦИИ БЛОКОВ --- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 1s ease-out, transform 1s ease-out;
+            position: relative;
+            z-index: 1;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @keyframes subtlePulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes heartBeat {
+            0% { transform: scale(1); }
+            15% { transform: scale(1.15); }
+            30% { transform: scale(1); }
+            45% { transform: scale(1.15); }
+            60% { transform: scale(1); }
+            100% { transform: scale(1); }
+        }
+
+        /* --- ДЕКОР: ВЕТОЧКИ --- */
+        .branch-img {
+            position: absolute;
+            width: 450px; 
+            height: auto;
+            opacity: 0; 
+            pointer-events: none; 
+            z-index: 0;
+            
+            transform: scale(0.8) translateY(20px);
+            transition: opacity 1.5s ease-out, transform 1.5s ease-out;
+        }
+
+        .reveal.active .branch-img {
+            opacity: 0.15; 
+            transform: scale(1) translateY(0);
+        }
+
+        .branch-tl { top: -50px; left: -150px; transform: rotate(15deg); }
+        .branch-br { bottom: -50px; right: -150px; transform: rotate(195deg); }
+        
+        .branch-timer-left { top: -80px; left: -100px; width: 250px; transform: rotate(30deg); }
+        .branch-timer-right { top: -80px; right: -100px; width: 250px; transform: rotate(-30deg); }
+
+        /* --- МУЗЫКА (Кнопка) --- */
+        .music-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 45px;
+            height: 45px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border: 1px solid #ddd;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            z-index: 999;
+            transition: transform 0.3s ease, background-color 0.3s;
+        }
+
+        .music-btn:hover {
+            transform: scale(1.1);
+            background-color: #fff;
+        }
+
+        .music-btn svg {
+            width: 20px;
+            height: 20px;
+            fill: #555;
+            transition: fill 0.3s;
+        }
+
+        .music-btn.playing svg {
+            fill: #000;
+            animation: rotateMusic 4s linear infinite;
+        }
+
+        @keyframes rotateMusic {
+            100% { transform: rotate(360deg); }
+        }
+
+
+        /* --- 1. Обложка --- */
+        .hero-image-section { padding: 0; margin: 0; background-color: transparent; width: 100%; }
+        .full-hero-image { width: 100%; height: auto; display: block; transition: transform 4s ease; }
+        .full-hero-image:hover { transform: scale(1.02); }
+
+        /* --- 2. Бумажное приглашение --- */
+        .paper-image-section { background-color: transparent; padding: 0; margin: 0; display: flex; justify-content: center; width: 100%; }
+        .full-paper-image { width: 100%; height: auto; display: block; transition: transform 4s ease; }
+        .full-paper-image:hover { transform: scale(1.02); }
+
+        /* --- 3. ТАЙМЕР --- */
+        .countdown-section { background-color: #ffffff; padding: 20px 15px 30px; text-align: center; position: relative; overflow: hidden; }
+        .countdown-wrapper { display: flex; justify-content: center; gap: 20px; margin: 0 auto; position: relative; z-index: 2; }
+        .countdown-item { display: flex; flex-direction: column; align-items: center; color: #444; }
+        
+        .countdown-number { 
+            font-family: 'Montserrat', sans-serif; 
+            font-size: 38px; 
+            font-weight: 300; 
+            letter-spacing: 1px; 
+            line-height: 1.1; 
+            animation: subtlePulse 3s infinite ease-in-out; 
+        }
+        .countdown-label { font-size: 10px; text-transform: uppercase; color: #888; margin-top: 5px; letter-spacing: 1.5px; }
+
+        /* --- 4. Календарь --- */
+        .calendar-image-section { padding: 0; margin: 0; text-align: center; background-color: transparent; width: 100%; }
+        .full-calendar-image { width: 100%; height: auto; display: block; transition: transform 4s ease; }
+        .full-calendar-image:hover { transform: scale(1.02); }
+
+        /* --- 5. Расписание --- */
+        .schedule-section { padding: 40px 20px 20px; background-color: #fff; position: relative; }
+        .schedule-image-wrapper { margin: 0 -20px; overflow: hidden; }
+        .full-schedule-image { width: 100%; height: auto; display: block; transition: transform 4s ease; }
+        .full-schedule-image:hover { transform: scale(1.03); }
+
+        /* --- 6. Локация --- */
+        .location-section { padding: 40px 20px 20px; background-color: #fff; position: relative; }
+        .location-image-wrapper { margin: 0 -20px; overflow: hidden; }
+        .full-location-image { width: 100%; height: auto; display: block; transition: transform 4s ease; }
+        .full-location-image:hover { transform: scale(1.03); }
+
+        /* --- 7. Карта (extra-block.png) --- */
+        .extra-image-section { padding: 0; margin: 0; background-color: transparent; width: 100%; }
+        .full-extra-image { width: 100%; height: auto; display: block; transition: transform 4s ease; }
+        .full-extra-image:hover { transform: scale(1.02); }
+
+        /* --- 8. Подарки --- */
+        .gifts-section { background-color: #fff; padding: 60px 30px 60px; text-align: center; position: relative; overflow: hidden; }
+
+        /* --- 9. Дресс-код --- */
+        .dresscode-section { background-color: #fff; padding: 60px 30px 60px; text-align: center; position: relative; overflow: hidden; }
+
+        /* --- 10. Финальный блок (footer.png) --- */
+        .footer-image-section { padding: 0; margin: 0; background-color: transparent; width: 100%; }
+        .full-footer-image { width: 100%; height: auto; display: block; transition: transform 4s ease; }
+        .full-footer-image:hover { transform: scale(1.02); }
+
+        @media (max-width: 480px) {
+            h2 { font-size: 22px; } 
+            
+            .dresscode-section, .gifts-section { padding: 40px 15px; }
+            .location-section, .schedule-section { padding: 30px 15px 15px; }
+            .location-image-wrapper, .schedule-image-wrapper { margin: 0 -15px; } 
+            
+            .countdown-wrapper { gap: 12px; }
+            .countdown-number { font-size: 28px; } 
+            .countdown-label { font-size: 9px; }
+            .contrast-text { font-size: 14px; }
+            .heart-icon { font-size: 18px; } 
+            
+            .branch-img { width: 300px; }
+            .branch-tl { left: -120px; top: -30px; }
+            .branch-br { right: -120px; bottom: -30px; }
+            .branch-timer-left, .branch-timer-right { width: 180px; left: -80px; right: -80px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Кнопка включения музыки -->
+<div class="music-btn" id="musicBtn" title="Включить/выключить музыку">
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+    </svg>
+</div>
+
+<!-- Аудио элемент -->
+<audio id="bgMusic" loop>
+    <source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<div class="invitation-container">
+
+    <!-- Блок 1: Обложка (hero.jpg) -->
+    <section class="hero-image-section reveal">
+        <img src="hero.jpg" alt="Обложка" class="full-hero-image">
+    </section>
+
+    <!-- Блок 2: Бумажное приглашение (paper-bg.png) -->
+    <section class="paper-image-section reveal">
+        <img src="paper-bg.png" alt="Приглашение" class="full-paper-image">
+    </section>
+
+    <!-- Блок 3: ТАЙМЕР -->
+    <section class="countdown-section reveal">
+        <img src="branch.png" alt="Декор" class="branch-img branch-timer-left">
+        
+        <div class="countdown-wrapper" id="countdown">
+            <div class="countdown-item">
+                <span class="countdown-number" id="days">00</span>
+                <span class="countdown-label">дней</span>
+            </div>
+            <div class="countdown-item">
+                <span class="countdown-number" id="hours">00</span>
+                <span class="countdown-label">часов</span>
+            </div>
+            <div class="countdown-item">
+                <span class="countdown-number" id="minutes">00</span>
+                <span class="countdown-label">минут</span>
+            </div>
+            <div class="countdown-item">
+                <span class="countdown-number" id="seconds">00</span>
+                <span class="countdown-label">секунд</span>
+            </div>
+        </div>
+
+        <img src="branch.png" alt="Декор" class="branch-img branch-timer-right">
+    </section>
+
+    <!-- Блок 4: Календарь (calendar.png) -->
+    <section class="calendar-image-section reveal">
+        <img src="calendar.png" alt="Календарь" class="full-calendar-image">
+    </section>
+
+    <!-- Блок 5: Расписание -->
+    <section class="schedule-section reveal">
+        <h2>Свадебное расписание</h2>
+        <div class="schedule-image-wrapper">
+            <img src="schedule.png" alt="Свадебное расписание" class="full-schedule-image">
+        </div>
+    </section>
+
+    <!-- Блок 6: Локация -->
+    <section class="location-section reveal">
+        <h2>Локация</h2>
+        <div class="location-image-wrapper">
+            <img src="location.png" alt="Локация" class="full-location-image">
+        </div>
+    </section>
+
+    <!-- Блок 7: Карта (extra-block.png) - Теперь стоит сразу после локации -->
+    <section class="extra-image-section reveal">
+        <img src="extra-block.png" alt="Карта" class="full-extra-image">
+    </section>
+
+    <!-- Блок 8: Подарки -->
+    <section class="gifts-section reveal">
+        <img src="branch.png" alt="Декор" class="branch-img branch-tl">
+
+        <h2>Пожелания по подаркам</h2>
+        <p class="contrast-text">Ваше присутствие в день нашей свадьбы — самый значимый подарок для нас!</p>
+        <p class="contrast-text">Мы понимаем, что дарить цветы на свадьбу — это традиция, но мы не сможем насладиться их красотой в полной мере. Будем рады альтернативе (вино или любое произведение классической литературы, подписанное Вами лично<span class="heart-icon">♡</span>)</p>
+
+        <img src="branch.png" alt="Декор" class="branch-img branch-br">
+    </section>
+
+    <!-- Блок 9: Дресс-код -->
+    <section class="dresscode-section reveal">
+        <h2>Дресс-код</h2>
+        <p class="contrast-text">Официальный вечерний стиль одежды в приглушенных оттенках</p>
+    </section>
+
+    <!-- Блок 10: Финальный блок (footer.png) -->
+    <section class="footer-image-section reveal">
+        <img src="footer.png" alt="Спасибо, что разделите с нами этот день" class="full-footer-image">
+    </section>
+
+</div>
+
+<!-- СКРИПТЫ -->
+<script>
+    // 1. СКРИПТ ДЛЯ ТАЙМЕРА
+    const countToDate = new Date("2026-11-21T16:20:00").getTime();
+
+    const timer = setInterval(() => {
+        const now = new Date().getTime();
+        const timeBetween = countToDate - now;
+
+        if (timeBetween < 0) {
+            clearInterval(timer);
+            document.getElementById("countdown").innerHTML = "<h3>Мы поженились! 🎉</h3>";
+            return;
+        }
+
+        const days = Math.floor(timeBetween / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((timeBetween % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((timeBetween % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((timeBetween % (1000 * 60)) / 1000);
+
+        document.getElementById("days").innerText = days < 10 ? "0" + days : days;
+        document.getElementById("hours").innerText = hours < 10 ? "0" + hours : hours;
+        document.getElementById("minutes").innerText = minutes < 10 ? "0" + minutes : minutes;
+        document.getElementById("seconds").innerText = seconds < 10 ? "0" + seconds : seconds;
+    }, 1000);
+
+    // 2. СКРИПТ ДЛЯ АНИМАЦИИ ПРИ ПРОКРУТКЕ
+    document.addEventListener("DOMContentLoaded", () => {
+        const reveals = document.querySelectorAll(".reveal");
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("active");
+                    observer.unobserve(entry.target); 
+                }
+            });
+        }, {
+            threshold: 0.15
+        });
+
+        reveals.forEach(reveal => {
+            observer.observe(reveal);
+        });
+    });
+
+    // 3. СКРИПТ ДЛЯ МУЗЫКИ
+    document.addEventListener("DOMContentLoaded", () => {
+        const musicBtn = document.getElementById("musicBtn");
+        const bgMusic = document.getElementById("bgMusic");
+        let isPlaying = false;
+
+        musicBtn.addEventListener("click", () => {
+            if (isPlaying) {
+                bgMusic.pause();
+                musicBtn.classList.remove("playing");
+            } else {
+                bgMusic.play().catch(error => {
+                    console.log("Браузер заблокировал автовоспроизведение.");
+                });
+                musicBtn.classList.add("playing");
+            }
+            isPlaying = !isPlaying;
+        });
+    });
+</script>
+
+</body>
+</html>
