@@ -235,11 +235,13 @@
         .full-extra-image { width: 100%; height: auto; display: block; transition: transform 4s ease; }
         .full-extra-image:hover { transform: scale(1.02); }
 
-        /* --- 8. Подарки --- */
-        .gifts-section { background-color: #fff; padding: 60px 30px 60px; text-align: center; position: relative; overflow: hidden; }
+        /* --- 8. Подарки (КАРТИНКА + ТЕКСТ) --- */
+        .gifts-section { background-color: #fff; padding: 40px 20px 40px; text-align: center; position: relative; }
+        .gifts-image-wrapper { margin: 0 -20px 30px -20px; }
+        .full-gifts-image { width: 100%; height: auto; display: block; }
 
         /* --- 9. Дресс-код --- */
-        .dresscode-section { background-color: #fff; padding: 60px 30px 60px; text-align: center; position: relative; overflow: hidden; }
+        .dresscode-section { background-color: #fff; padding: 40px 30px 60px; text-align: center; position: relative; overflow: hidden; }
 
         /* --- 10. Финальный блок (footer.png) --- */
         .footer-image-section { padding: 0; margin: 0; background-color: transparent; width: 100%; }
@@ -249,7 +251,7 @@
         @media (max-width: 480px) {
             h2 { font-size: 22px; } 
             
-            .dresscode-section, .gifts-section { padding: 40px 15px; }
+            .dresscode-section { padding: 30px 15px 40px; }
             .location-section, .schedule-section { padding: 30px 15px 15px; }
             .location-image-wrapper, .schedule-image-wrapper { margin: 0 -15px; } 
             
@@ -263,6 +265,9 @@
             .branch-tl { left: -120px; top: -30px; }
             .branch-br { right: -120px; bottom: -30px; }
             .branch-timer-left, .branch-timer-right { width: 180px; left: -80px; right: -80px; }
+
+            .gifts-section { padding: 30px 15px; }
+            .gifts-image-wrapper { margin: 0 -15px 20px -15px; }
         }
     </style>
 </head>
@@ -339,20 +344,24 @@
         </div>
     </section>
 
-    <!-- Блок 7: Карта (extra-block.png) - Теперь стоит сразу после локации -->
+    <!-- Блок 7: Карта (extra-block.png) -->
     <section class="extra-image-section reveal">
         <img src="extra-block.png" alt="Карта" class="full-extra-image">
     </section>
 
-    <!-- Блок 8: Подарки -->
+    <!-- Блок 8: Подарки (КАРТИНКА + ТЕКСТ) -->
     <section class="gifts-section reveal">
-        <img src="branch.png" alt="Декор" class="branch-img branch-tl">
-
-        <h2>Пожелания по подаркам</h2>
-        <p class="contrast-text">Ваше присутствие в день нашей свадьбы — самый значимый подарок для нас!</p>
-        <p class="contrast-text">Мы понимаем, что дарить цветы на свадьбу — это традиция, но мы не сможем насладиться их красотой в полной мере. Будем рады альтернативе (вино или любое произведение классической литературы, подписанное Вами лично<span class="heart-icon">♡</span>)</p>
-
-        <img src="branch.png" alt="Декор" class="branch-img branch-br">
+        <div class="gifts-image-wrapper">
+            <!-- ВАША КАРТИНКА ВМЕСТО ЗАГОЛОВКА (gifts.jpg) -->
+            <img src="gifts.jpg" alt="Пожелания по подаркам" class="full-gifts-image">
+        </div>
+        
+        <!-- ТЕКСТ С ПРИНУДИТЕЛЬНЫМ СОХРАНЕНИЕМ ФРАЗЫ "дополнение к поздравлению." НА ОДНОЙ СТРОКЕ -->
+        <p class="contrast-text">
+            Букет не обязателен)<br>
+            Вместо него можно принести вино или любое произведение классической литературы с Вашими тёплыми пожеланиями внутри как приятное <span style="white-space: nowrap;">дополнение к поздравлению.</span><br>
+            Главное — чтобы в этот день Вы были с нами!
+        </p>
     </section>
 
     <!-- Блок 9: Дресс-код -->
